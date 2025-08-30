@@ -71,7 +71,7 @@ public class doctor_dashboard extends AppCompatActivity {
     }
 
     private void setupButtonClickListeners() {
-        // Set OnClickListener for the Edit Profile button
+
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,7 +100,7 @@ public class doctor_dashboard extends AppCompatActivity {
             }
         });
 
-        // Set OnClickListener for the Back button
+
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,18 +108,24 @@ public class doctor_dashboard extends AppCompatActivity {
             }
         });
 
-        // Placeholder listeners for other buttons
+
         btnEmergencySchedules.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(doctor_dashboard.this, "Emergency Schedules Clicked!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(doctor_dashboard.this, "Emergency Schedules Clicked!", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(doctor_dashboard.this, EmergencyScheduleActivity.class);
+                i.putExtra("DOCTOR_ID", doctorId);
+                startActivity(i);
             }
         });
 
         btnSeeAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(doctor_dashboard.this, "See Appointments Clicked!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(doctor_dashboard.this, "See Appointments Clicked!", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(doctor_dashboard.this, AllAppointmentsActivity.class);
+                i.putExtra("DOCTOR_ID", doctorId);
+                startActivity(i);
             }
         });
     }

@@ -45,7 +45,7 @@ public class book_appointment extends AppCompatActivity {
     private List<String> allTimeSlots;
     private List<String> bookedTimeSlots;
     private ArrayAdapter<String> doctorAdapter;
-    private TimeSlotAdapter timeSlotAdapter; // Using the nested custom adapter
+    private TimeSlotAdapter timeSlotAdapter;
 
     private String selectedDoctorId, selectedDoctorName, selectedDate, selectedTimeSlot, patientId, patientName;
 
@@ -99,7 +99,9 @@ public class book_appointment extends AppCompatActivity {
         spinnerDoctors.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                 selectedDoctorId = doctorList.get(position).getDoctorId();
+
                 selectedDoctorName = doctorList.get(position).getName();
                 fetchBookedSlotsForDoctorAndDate();
             }

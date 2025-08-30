@@ -26,7 +26,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp"/>
 
-        <!-- Changed EditText to Spinner to show a list of doctors -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -93,6 +92,9 @@
                 android:textSize="20sp"
                 android:backgroundTint="#4284D5"
                 android:layout_alignParentEnd="true"/>
+
+
+
         </RelativeLayout>
     </LinearLayout>
 </ScrollView>

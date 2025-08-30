@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <!-- This is the required permission to access the user's gallery -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Permission for older Android versions (up to API 32) -->
-
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Permission for older Android versions (up to API 32) -->
     <!-- Permission for newer Android versions (API 33+) -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
@@ -19,8 +16,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.QuickDoc">
-
-        <!-- All of your existing activity declarations go here -->
+        <activity
+            android:name=".AllAppointmentsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EmergencyScheduleActivity"
+            android:exported="false" /> <!-- All of your existing activity declarations go here -->
         <activity
             android:name=".Sign_up"
             android:exported="false" />
@@ -44,6 +45,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -74,4 +76,3 @@
     </application>
 
 </manifest>
-

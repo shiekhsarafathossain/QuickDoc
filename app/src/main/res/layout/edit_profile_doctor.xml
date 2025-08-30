@@ -39,6 +39,7 @@
                 android:id="@+id/etEditUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:background="@android:drawable/edit_text"
                 android:layout_marginBottom="10dp"
                 android:hint="Edit Username" />
@@ -83,6 +84,8 @@
                 android:background="@android:drawable/edit_text"
                 android:layout_marginBottom="10dp"
                 android:hint="Edit Bio" />
+
+
 
             <EditText
                 android:id="@+id/etEditSpecialization"
@@ -136,7 +139,12 @@
                 android:padding="8dp"
                 android:text="Done"
                 android:textColor="#4284D5" />
+
+
+
         </RelativeLayout>
     </LinearLayout>
+
+
 </ScrollView>
 
