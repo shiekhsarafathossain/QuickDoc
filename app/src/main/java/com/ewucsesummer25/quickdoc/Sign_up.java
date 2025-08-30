@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Patterns;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -44,31 +45,44 @@ public class Sign_up extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("patients");
-
-        initializeViews();
-        initializeLaunchers();
-        setupButtonClickListeners();
-    }
-
-    private void initializeViews() {
         etName = findViewById(R.id.etName);
         etUsername = findViewById(R.id.etUsername);
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         etRePassword = findViewById(R.id.etRePassword);
         etAddress = findViewById(R.id.etAddress);
-        // Corrected the ID to etPhone from your XML
         etPhone = findViewById(R.id.etPhoneNumber);
         btnBack = findViewById(R.id.btnBack);
         btnRegister = findViewById(R.id.btnDone);
         ivProfileImage = findViewById(R.id.addImage);
+
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                registerPatient();
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkPermissionAndOpenGallery();
+            }
+        });
+
+        initializeLaunchers();
+
     }
 
-    private void setupButtonClickListeners() {
-        btnRegister.setOnClickListener(v -> registerPatient());
-        btnBack.setOnClickListener(v -> finish());
-        ivProfileImage.setOnClickListener(v -> checkPermissionAndOpenGallery());
-    }
+
+
+
 
     private void initializeLaunchers() {
         requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
@@ -94,10 +108,9 @@ public class Sign_up extends AppCompatActivity {
         });
     }
 
-    // --- THIS IS THE CORRECTED METHOD ---
     private void checkPermissionAndOpenGallery() {
         String permission;
-        // Check which permission is needed based on the Android version
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             permission = Manifest.permission.READ_MEDIA_IMAGES; // For Android 13+
         } else {

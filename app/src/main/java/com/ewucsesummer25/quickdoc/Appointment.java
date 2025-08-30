@@ -81,6 +81,7 @@ public class Appointment {
 
         return appointmentTime;
     }
+
     public void setAppointmentTime(String appointmentTime) {
         this.appointmentTime = appointmentTime;
     }

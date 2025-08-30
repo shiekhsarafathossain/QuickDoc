@@ -29,9 +29,11 @@ public class portal_doctor extends AppCompatActivity {
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent i = new Intent(portal_doctor.this, signup_doctor.class);
                 startActivity(i);
                 finishAffinity();
+
             }
         });
 

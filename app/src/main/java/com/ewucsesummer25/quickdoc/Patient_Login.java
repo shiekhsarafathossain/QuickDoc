@@ -40,6 +40,7 @@ public class Patient_Login extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 loginPatient();
             }
         });
@@ -47,6 +48,7 @@ public class Patient_Login extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 finish();
             }
         });
@@ -75,19 +77,19 @@ public class Patient_Login extends AppCompatActivity {
                         if (passwordFromDB != null && passwordFromDB.equals(password)) {
                             String patientId = userSnapshot.getKey();
 
-                            // --- Save Session using SharedPreferences (Local Storage) ---
+
                             SharedPreferences sharedPreferences = getSharedPreferences("user_session", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("USER_ID", patientId);
                             editor.putString("USER_TYPE", "patient");
                             editor.apply();
-                            // --- End of Save Session ---
+
 
                             Toast.makeText(Patient_Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(Patient_Login.this, MainActivity.class);
                             intent.putExtra("PATIENT_ID", patientId);
                             startActivity(intent);
-                            finishAffinity(); // Clear all previous activities from the stack
+                            finishAffinity();
                             return;
                         }
                     }
@@ -100,7 +102,7 @@ public class Patient_Login extends AppCompatActivity {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(Patient_Login.this, "Database Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Patient_Login.this, "Database Error!", Toast.LENGTH_SHORT).show();
             }
         });
     }

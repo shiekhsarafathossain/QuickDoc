@@ -28,7 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class patient_dashboard extends AppCompatActivity {
 
-    private ImageView ivPatientProfile; // Added for the profile image
+    private ImageView ivPatientProfile;
     private TextView tvPatientName, tvPatientAddress;
     private Button btnEditProfile, btnBookAppointment, btnEmergencyCalls, btnBack, btnLogout;
     private LinearLayout appointmentsContainer;
@@ -42,25 +42,7 @@ public class patient_dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.patient_dashboard);
 
-        patientId = getIntent().getStringExtra("PATIENT_ID");
-
-        initializeViews();
-        setupButtonClickListeners();
-
-        if (patientId != null && !patientId.isEmpty()) {
-            patientRef = FirebaseDatabase.getInstance().getReference("patients").child(patientId);
-            appointmentsRef = FirebaseDatabase.getInstance().getReference("appointments");
-            doctorsRef = FirebaseDatabase.getInstance().getReference("doctors");
-            loadPatientData();
-            loadAppointments();
-        } else {
-            Toast.makeText(this, "Patient ID not found. Please log in again.", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-    }
-
-    private void initializeViews() {
-        ivPatientProfile = findViewById(R.id.imgUser); // Initialize the ImageView
+        ivPatientProfile = findViewById(R.id.imgUser);
         tvPatientName = findViewById(R.id.tvPatientName);
         tvPatientAddress = findViewById(R.id.tvPatientAddress);
         btnEditProfile = findViewById(R.id.btnEditProfile);
@@ -69,9 +51,7 @@ public class patient_dashboard extends AppCompatActivity {
         appointmentsContainer = findViewById(R.id.appointmentsContainer);
         btnBack = findViewById(R.id.btnBack);
         btnLogout = findViewById(R.id.btnDone);
-    }
 
-    private void setupButtonClickListeners() {
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,7 +93,27 @@ public class patient_dashboard extends AppCompatActivity {
                 logoutPatient();
             }
         });
+
+
+
+        patientId = getIntent().getStringExtra("PATIENT_ID");
+
+
+
+        if (patientId != null && !patientId.isEmpty()) {
+            patientRef = FirebaseDatabase.getInstance().getReference("patients").child(patientId);
+            appointmentsRef = FirebaseDatabase.getInstance().getReference("appointments");
+            doctorsRef = FirebaseDatabase.getInstance().getReference("doctors");
+            loadPatientData();
+            loadAppointments();
+        } else {
+            Toast.makeText(this, "Patient ID not found. Please log in again.", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
+
+
+
 
     private void loadPatientData() {
         patientRef.addValueEventListener(new ValueEventListener() {
@@ -126,13 +126,13 @@ public class patient_dashboard extends AppCompatActivity {
                         tvPatientName.setText(patientName);
                         tvPatientAddress.setText(patient.getAddress());
 
-                        // --- Logic to Decode and Display Profile Image ---
+
                         if (patient.getProfileImageBase64() != null && !patient.getProfileImageBase64().isEmpty()) {
                             byte[] decodedString = Base64.decode(patient.getProfileImageBase64(), Base64.DEFAULT);
                             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                             ivPatientProfile.setImageBitmap(decodedByte);
                         }
-                        // --- End of Image Logic ---
+
                     }
                 }
             }
@@ -199,7 +199,7 @@ public class patient_dashboard extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Fields will remain blank if doctor details fail to load
+                Toast.makeText(patient_dashboard.this, "Database Error!", Toast.LENGTH_SHORT).show();
             }
         });
 

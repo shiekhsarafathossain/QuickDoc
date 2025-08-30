@@ -68,6 +68,7 @@ public class Patient {
 
     public String getProfileImageBase64() {
         return profileImageBase64;
+
     }
 
     public void setProfileImageBase64(String profileImageBase64) {

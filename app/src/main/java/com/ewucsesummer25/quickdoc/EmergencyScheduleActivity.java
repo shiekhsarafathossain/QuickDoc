@@ -48,7 +48,12 @@ public class EmergencyScheduleActivity extends AppCompatActivity {
             finish();
         }
 
-        btnBack.setOnClickListener(v -> finish());
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void loadTodaysAppointments() {
@@ -86,13 +91,13 @@ public class EmergencyScheduleActivity extends AppCompatActivity {
 
     private void addAppointmentViewToList(Appointment appointment) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        // We can reuse the same list item layout from the patient dashboard
+
         View appointmentView = inflater.inflate(R.layout.appointment_list_item, appointmentsContainer, false);
 
-        TextView tvPatientName = appointmentView.findViewById(R.id.tvAppointmentDoctorName); // Re-using this view for Patient Name
+        TextView tvPatientName = appointmentView.findViewById(R.id.tvAppointmentDoctorName);
         TextView tvTime = appointmentView.findViewById(R.id.tvAppointmentDateTime);
 
-        // Hide views we don't need for this simple list
+
         appointmentView.findViewById(R.id.tvAppointmentSpecialization).setVisibility(View.GONE);
         appointmentView.findViewById(R.id.tvAppointmentLocation).setVisibility(View.GONE);
 

@@ -24,7 +24,7 @@ public class doctor_lookup extends AppCompatActivity {
 
     private TextView tvDrName, tvShortBio, tvSpecialization, tvExperience, tvQualifications;
     private Button btnBookNow, btnBack;
-    private ImageView ivProfileImage; // To display the doctor's picture
+    private ImageView ivProfileImage;
 
     private DatabaseReference doctorRef;
     private String doctorId, patientId, patientName;
@@ -34,20 +34,18 @@ public class doctor_lookup extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_lookup);
 
-        // Get data from MainActivity
         doctorId = getIntent().getStringExtra("DOCTOR_ID");
         patientId = getIntent().getStringExtra("PATIENT_ID");
         patientName = getIntent().getStringExtra("PATIENT_NAME");
 
-        // Initialize Views
         tvDrName = findViewById(R.id.tvDrName);
         tvShortBio = findViewById(R.id.tvShortBio);
         tvSpecialization = findViewById(R.id.tvSpecializationText);
         tvExperience = findViewById(R.id.tvExperienceText);
         tvQualifications = findViewById(R.id.tvQualificationsText);
-        btnBookNow = findViewById(R.id.btnEditProfile); // This is the "Book Now" button
+        btnBookNow = findViewById(R.id.btnEditProfile);
         btnBack = findViewById(R.id.btnBack);
-        ivProfileImage = findViewById(R.id.imgUser); // Initialize the ImageView
+        ivProfileImage = findViewById(R.id.imgUser);
 
         if (doctorId != null && !doctorId.isEmpty()) {
             doctorRef = FirebaseDatabase.getInstance().getReference("doctors").child(doctorId);
@@ -92,7 +90,7 @@ public class doctor_lookup extends AppCompatActivity {
                         tvExperience.setText(doctor.getExperience());
                         tvQualifications.setText(doctor.getQualification());
 
-                        // Decode and set the profile image
+
                         String imageBase64 = doctor.getProfileImageBase64();
                         if (imageBase64 != null && !imageBase64.isEmpty()) {
                             try {
@@ -100,7 +98,7 @@ public class doctor_lookup extends AppCompatActivity {
                                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                                 ivProfileImage.setImageBitmap(decodedByte);
                             } catch (Exception e) {
-                                // If decoding fails, set a default image
+
                                 ivProfileImage.setImageResource(R.drawable.doctor_1);
                             }
                         }

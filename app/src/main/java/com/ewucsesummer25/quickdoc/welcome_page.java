@@ -18,14 +18,15 @@ public class welcome_page extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome_page);
 
-        // --- Check for an existing session ---
+
         SharedPreferences sharedPreferences = getSharedPreferences("user_session", MODE_PRIVATE);
         String userId = sharedPreferences.getString("USER_ID", null);
         String userType = sharedPreferences.getString("USER_TYPE", null);
 
         if (userId != null && userType != null) {
-            // A user is already logged in, redirect them
+
             if (userType.equals("patient")) {
+
                 Intent intent = new Intent(welcome_page.this, MainActivity.class);
                 intent.putExtra("PATIENT_ID", userId);
                 startActivity(intent);
@@ -34,10 +35,11 @@ public class welcome_page extends AppCompatActivity {
                 intent.putExtra("DOCTOR_ID", userId);
                 startActivity(intent);
             }
-            finish(); // Close the welcome page so the user cannot go back to it
-            return; // Stop further execution of this method
+            finish();
+            return;
         }
-        // --- End of session check ---
+
+
 
 
         btnGetStarted = findViewById(R.id.btnGetStarted);

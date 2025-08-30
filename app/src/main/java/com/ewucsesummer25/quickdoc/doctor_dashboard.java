@@ -37,26 +37,6 @@ public class doctor_dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.doctor_dashboard);
 
-        // Initialize UI elements
-        initializeViews();
-
-        // Get the doctor's unique ID passed from the Doctor_Login activity
-        Intent intent = getIntent();
-        doctorId = intent.getStringExtra("DOCTOR_ID");
-
-        // Initialize Firebase database reference to the specific doctor's node
-        if (doctorId != null && !doctorId.isEmpty()) {
-            databaseReference = FirebaseDatabase.getInstance().getReference("doctors").child(doctorId);
-            loadDoctorProfile();
-        } else {
-            Toast.makeText(this, "Error: Doctor ID not found.", Toast.LENGTH_LONG).show();
-            finish();
-        }
-
-        setupButtonClickListeners();
-    }
-
-    private void initializeViews() {
         tvDrName = findViewById(R.id.tvDrName);
         tvShortBio = findViewById(R.id.tvShortBio);
         tvSpecializationText = findViewById(R.id.tvSpecializationText);
@@ -67,10 +47,8 @@ public class doctor_dashboard extends AppCompatActivity {
         btnSeeAppointment = findViewById(R.id.btnSeeAppointment);
         btnBack = findViewById(R.id.btnBack);
         btnLogout = findViewById(R.id.btnDone);
-        ivProfileImage = findViewById(R.id.imgUser); // Initialize ImageView
-    }
+        ivProfileImage = findViewById(R.id.imgUser);
 
-    private void setupButtonClickListeners() {
 
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,17 +59,15 @@ public class doctor_dashboard extends AppCompatActivity {
             }
         });
 
-        // Set OnClickListener for the Logout button
+
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Clear the saved user session
                 SharedPreferences sharedPreferences = getSharedPreferences("user_session", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.clear();
                 editor.apply();
 
-                // Navigate back to the welcome screen
                 Intent logoutIntent = new Intent(doctor_dashboard.this, welcome_page.class);
                 logoutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(logoutIntent);
@@ -104,6 +80,7 @@ public class doctor_dashboard extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 finish();
             }
         });
@@ -128,7 +105,26 @@ public class doctor_dashboard extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+
+        Intent intent = getIntent();
+        doctorId = intent.getStringExtra("DOCTOR_ID");
+
+
+        if (doctorId != null && !doctorId.isEmpty()) {
+            databaseReference = FirebaseDatabase.getInstance().getReference("doctors").child(doctorId);
+            loadDoctorProfile();
+        } else {
+            Toast.makeText(this, "Error: Doctor ID not found.", Toast.LENGTH_LONG).show();
+            finish();
+        }
+
+
     }
+
+
+
+
 
 
     private void loadDoctorProfile() {
@@ -138,14 +134,14 @@ public class doctor_dashboard extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     Doctor doctor = dataSnapshot.getValue(Doctor.class);
                     if (doctor != null) {
-                        // Populate the TextViews with data
+
                         tvDrName.setText("Dr. " + doctor.getName());
                         tvShortBio.setText(doctor.getBio());
                         tvSpecializationText.setText(doctor.getSpecialization());
                         tvExperienceText.setText(doctor.getExperience());
                         tvQualificationsText.setText(doctor.getQualification());
 
-                        // Decode and display the profile image
+
                         String imageBase64 = doctor.getProfileImageBase64();
                         if (imageBase64 != null && !imageBase64.isEmpty()) {
                             try {
@@ -153,7 +149,7 @@ public class doctor_dashboard extends AppCompatActivity {
                                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                                 ivProfileImage.setImageBitmap(decodedByte);
                             } catch (Exception e) {
-                                // If decoding fails, you can set a default image
+
                                 ivProfileImage.setImageResource(R.drawable.doctor_1);
                             }
                         }

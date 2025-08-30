@@ -38,12 +38,12 @@ public class edit_profile_patient extends AppCompatActivity {
 
     private EditText etName, etUsername, etEmail, etPhone, etAddress;
     private Button btnBack, btnDone;
-    private ImageView ivProfileImage; // For the profile picture
+    private ImageView ivProfileImage;
+
     private DatabaseReference patientRef;
     private String patientId;
-    private String imageBase64; // To hold the image data
+    private String imageBase64;
 
-    // Launchers for handling permissions and image selection
     private ActivityResultLauncher<String> requestPermissionLauncher;
     private ActivityResultLauncher<Intent> pickImageLauncher;
 
@@ -53,23 +53,6 @@ public class edit_profile_patient extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_profile_patient);
 
-        patientId = getIntent().getStringExtra("PATIENT_ID");
-
-        initializeViews();
-        initializeLaunchers(); // Set up the activity result launchers
-        setupButtonClickListeners();
-
-
-        if (patientId != null && !patientId.isEmpty()) {
-            patientRef = FirebaseDatabase.getInstance().getReference("patients").child(patientId);
-            loadPatientData();
-        } else {
-            Toast.makeText(this, "Error: Patient ID is missing.", Toast.LENGTH_LONG).show();
-            finish();
-        }
-    }
-
-    private void initializeViews() {
         etName = findViewById(R.id.etEditName);
         etUsername = findViewById(R.id.etEditUserame);
         etEmail = findViewById(R.id.etEditEmail);
@@ -77,10 +60,10 @@ public class edit_profile_patient extends AppCompatActivity {
         etAddress = findViewById(R.id.etChangeAddress);
         btnBack = findViewById(R.id.btnBack);
         btnDone = findViewById(R.id.btnDone);
-        ivProfileImage = findViewById(R.id.imgUser); // Initialize ImageView
-    }
+        ivProfileImage = findViewById(R.id.imgUser);
 
-    private void setupButtonClickListeners() {
+
+
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,14 +78,33 @@ public class edit_profile_patient extends AppCompatActivity {
             }
         });
 
-        // Make the profile image clickable to change it
         ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkPermissionAndOpenGallery();
             }
         });
+
+
+
+        patientId = getIntent().getStringExtra("PATIENT_ID");
+
+
+
+        initializeLaunchers();
+
+
+
+        if (patientId != null && !patientId.isEmpty()) {
+            patientRef = FirebaseDatabase.getInstance().getReference("patients").child(patientId);
+            loadPatientData();
+        } else {
+            Toast.makeText(this, "Error: Patient ID is missing.", Toast.LENGTH_LONG).show();
+            finish();
+        }
     }
+
+
 
 
     private void loadPatientData() {
@@ -118,7 +120,7 @@ public class edit_profile_patient extends AppCompatActivity {
                         etPhone.setText(patient.getPhone());
                         etAddress.setText(patient.getAddress());
 
-                        // Load and display the profile image if it exists
+
                         imageBase64 = patient.getProfileImageBase64();
                         if (imageBase64 != null && !imageBase64.isEmpty()) {
                             byte[] decodedString = Base64.decode(imageBase64, Base64.DEFAULT);
@@ -154,7 +156,6 @@ public class edit_profile_patient extends AppCompatActivity {
         updates.put("email", email);
         updates.put("phone", phone);
         updates.put("address", address);
-        // Include the profile image in the update
         updates.put("profileImageBase64", imageBase64);
 
 
@@ -168,7 +169,6 @@ public class edit_profile_patient extends AppCompatActivity {
         });
     }
 
-    // --- Methods for Image Picking and Processing ---
 
     private void initializeLaunchers() {
         requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {

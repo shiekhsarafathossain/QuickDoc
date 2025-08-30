@@ -36,16 +36,14 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Patient Info
     private ImageView ivPatientProfile;
     private TextView tvUserName, tvAddress;
     private Button btnProfileInfo, btnLogoutPatient;
 
-    // Upcoming Consultation
     private RelativeLayout upcomingConsultationLayout;
     private TextView tvDoctorName, tvDoctorConsultationTime, tvUpcomingConsultantTitle, tvDoctorAddressConsult, tvDoctorSpecializationConsult;
 
-    // Doctor List Container
+
     private LinearLayout doctorsContainer;
 
     private DatabaseReference patientRef, appointmentsRef, doctorsRef;
@@ -57,28 +55,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
-        patientId = getIntent().getStringExtra("PATIENT_ID");
+        ivPatientProfile = findViewById(R.id.userIcon);
+        tvUserName = findViewById(R.id.tvUserName);
+        tvAddress = findViewById(R.id.tvAddress);
+        btnProfileInfo = findViewById(R.id.btnProfileInfo);
+        upcomingConsultationLayout = findViewById(R.id.rl2);
+        tvDoctorName = findViewById(R.id.tvDoctorName);
+        tvDoctorConsultationTime = findViewById(R.id.tvDoctorConsultationTime);
+        tvUpcomingConsultantTitle = findViewById(R.id.tvUpcomingConsultant);
+        doctorsContainer = findViewById(R.id.doctorsContainer);
+        btnLogoutPatient = findViewById(R.id.btnLogoutPatient);
+        tvDoctorAddressConsult = findViewById(R.id.tvDoctorAddressConsult);
+        tvDoctorSpecializationConsult = findViewById(R.id.tvDoctorSpecializationConsult);
 
-        initializeViews();
-
-        if (patientId != null && !patientId.isEmpty()) {
-            patientRef = FirebaseDatabase.getInstance().getReference("patients").child(patientId);
-            appointmentsRef = FirebaseDatabase.getInstance().getReference("appointments");
-            doctorsRef = FirebaseDatabase.getInstance().getReference("doctors");
-
-            loadPatientData();
-            loadUpcomingAppointment();
-            loadAllDoctors();
-        } else {
-            Toast.makeText(this, "Error: Patient ID not found.", Toast.LENGTH_LONG).show();
-            finish();
-        }
+        upcomingConsultationLayout.setVisibility(View.GONE);
+        tvUpcomingConsultantTitle.setVisibility(View.GONE);
 
         btnProfileInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,25 +89,28 @@ public class MainActivity extends AppCompatActivity {
                 logoutPatient();
             }
         });
+
+
+        patientId = getIntent().getStringExtra("PATIENT_ID");
+
+
+
+        if (patientId != null && !patientId.isEmpty()) {
+            patientRef = FirebaseDatabase.getInstance().getReference("patients").child(patientId);
+            appointmentsRef = FirebaseDatabase.getInstance().getReference("appointments");
+            doctorsRef = FirebaseDatabase.getInstance().getReference("doctors");
+
+            loadPatientData();
+            loadUpcomingAppointment();
+            loadAllDoctors();
+        } else {
+            Toast.makeText(this, "Error: Patient ID not found.", Toast.LENGTH_LONG).show();
+            finish();
+        }
+
+
     }
 
-    private void initializeViews() {
-        ivPatientProfile = findViewById(R.id.userIcon);
-        tvUserName = findViewById(R.id.tvUserName);
-        tvAddress = findViewById(R.id.tvAddress);
-        btnProfileInfo = findViewById(R.id.btnProfileInfo);
-        upcomingConsultationLayout = findViewById(R.id.rl2);
-        tvDoctorName = findViewById(R.id.tvDoctorName);
-        tvDoctorConsultationTime = findViewById(R.id.tvDoctorConsultationTime);
-        tvUpcomingConsultantTitle = findViewById(R.id.tvUpcomingConsultant);
-        doctorsContainer = findViewById(R.id.doctorsContainer);
-        btnLogoutPatient = findViewById(R.id.btnLogoutPatient);
-        tvDoctorAddressConsult = findViewById(R.id.tvDoctorAddressConsult);
-        tvDoctorSpecializationConsult = findViewById(R.id.tvDoctorSpecializationConsult);
-
-        upcomingConsultationLayout.setVisibility(View.GONE);
-        tvUpcomingConsultantTitle.setVisibility(View.GONE);
-    }
 
     private void loadPatientData() {
         patientRef.addValueEventListener(new ValueEventListener() {
@@ -226,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View doctorView = inflater.inflate(R.layout.doctor_list_item, doctorsContainer, false);
 
-        ImageView ivDocProfile = doctorView.findViewById(R.id.doctorIconItem); // Find the ImageView
+        ImageView ivDocProfile = doctorView.findViewById(R.id.doctorIconItem);
         TextView tvDocName = doctorView.findViewById(R.id.tvDoctorNameItem);
         TextView tvDocSpec = doctorView.findViewById(R.id.tvDoctorSpecItem);
         TextView tvDocAddress = doctorView.findViewById(R.id.tvDoctorAddressItem);
@@ -236,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
         tvDocSpec.setText(doctor.getSpecialization());
         tvDocAddress.setText(doctor.getAddress());
 
-        // Decode and set the doctor's profile image
+
         String imageBase64 = doctor.getProfileImageBase64();
         if (imageBase64 != null && !imageBase64.isEmpty()) {
             try {
@@ -244,7 +239,8 @@ public class MainActivity extends AppCompatActivity {
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                 ivDocProfile.setImageBitmap(decodedByte);
             } catch (Exception e) {
-                ivDocProfile.setImageResource(R.drawable.doctor_1); // Default image on error
+                ivDocProfile.setImageResource(R.drawable.doctor_1);
+
             }
         }
 

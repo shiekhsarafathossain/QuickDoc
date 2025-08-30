@@ -37,14 +37,16 @@ public class signup_doctor extends AppCompatActivity {
     private EditText etName, etUsername, etEmail, etPassword, etRePassword, etAddress,
             etPhoneNumber, etPostalCode, etBio, etSpecialization, etExperience, etQualification;
     private Button btnBack, btnRegister;
-    private ImageView ivProfileImage; // For the profile picture
-    private String imageBase64; // To hold the image data
+    private ImageView ivProfileImage;
+    private String imageBase64;
 
     private DatabaseReference databaseReference;
 
-    // Launchers for handling permissions and image selection
+
+
     private ActivityResultLauncher<String> requestPermissionLauncher;
     private ActivityResultLauncher<Intent> pickImageLauncher;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +54,6 @@ public class signup_doctor extends AppCompatActivity {
         setContentView(R.layout.activity_signup_doctor);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("doctors");
-
-        initializeViews();
-        initializeLaunchers();
-        setupButtonClickListeners();
-    }
-
-    private void initializeViews() {
         etName = findViewById(R.id.etName);
         etUsername = findViewById(R.id.etUsername);
         etEmail = findViewById(R.id.etEmail);
@@ -73,10 +68,10 @@ public class signup_doctor extends AppCompatActivity {
         etQualification = findViewById(R.id.etQualification);
         btnRegister = findViewById(R.id.btnDone);
         btnBack = findViewById(R.id.btnBack);
-        ivProfileImage = findViewById(R.id.addImage); // Initialize ImageView
-    }
+        ivProfileImage = findViewById(R.id.addImage);
 
-    private void setupButtonClickListeners() {
+
+        initializeLaunchers();
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +96,7 @@ public class signup_doctor extends AppCompatActivity {
             }
         });
     }
+
 
     private void registerDoctor() {
         String name = etName.getText().toString().trim();
@@ -138,7 +134,6 @@ public class signup_doctor extends AppCompatActivity {
 
         Doctor newDoctor = new Doctor(name, username, email, password, address, phone, postalCode, bio, specialization, experience, qualification);
 
-        // Add the profile image if one was selected
         if (imageBase64 != null && !imageBase64.isEmpty()) {
             newDoctor.setProfileImageBase64(imageBase64);
         }
@@ -156,14 +151,12 @@ public class signup_doctor extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     } else {
-                        Toast.makeText(signup_doctor.this, "Registration Failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(signup_doctor.this, "Registration Failed!", Toast.LENGTH_LONG).show();
                     }
                 }
             });
         }
     }
-
-    // --- Methods for Image Picking and Processing ---
 
     private void initializeLaunchers() {
         requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {

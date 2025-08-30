@@ -263,6 +263,7 @@ public class book_appointment extends AppCompatActivity {
                 textView.setEnabled(true);
             }
 
+
             return view;
         }
 

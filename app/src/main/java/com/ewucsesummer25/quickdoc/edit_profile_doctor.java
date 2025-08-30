@@ -38,14 +38,16 @@ import java.util.Map;
 
 public class edit_profile_doctor extends AppCompatActivity {
 
-    private EditText etName, etUsername, etEmail, etPhoneNumber, etAddress, etPostalCode,
-            etBio, etSpecialization, etExperience, etQualification;
+    private EditText etName, etUsername, etEmail, etPhoneNumber, etAddress;
+
+    private  EditText etPostalCode, etBio, etSpecialization, etExperience, etQualification;
+
     private Button btnBack, btnDone;
-    private ImageView ivProfileImage; // For the profile picture
+    private ImageView ivProfileImage;
 
     private DatabaseReference databaseReference;
     private String doctorId;
-    private String imageBase64; // To hold new image data
+    private String imageBase64;
 
     private ActivityResultLauncher<String> requestPermissionLauncher;
     private ActivityResultLauncher<Intent> pickImageLauncher;
@@ -55,7 +57,21 @@ public class edit_profile_doctor extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_profile_doctor);
 
-        initializeViews();
+        etName = findViewById(R.id.etEditName);
+        etUsername = findViewById(R.id.etEditUsername);
+        etEmail = findViewById(R.id.etEditEmail);
+        etPhoneNumber = findViewById(R.id.etEditPhoneNumber);
+        etAddress = findViewById(R.id.etEditAddress);
+        etPostalCode = findViewById(R.id.etEditPostalCode);
+        etBio = findViewById(R.id.etEditBio);
+        etSpecialization = findViewById(R.id.etEditSpecialization);
+        etExperience = findViewById(R.id.etEditExperience);
+        etQualification = findViewById(R.id.etEditQualification);
+        btnBack = findViewById(R.id.btnBack);
+        btnDone = findViewById(R.id.btnDone);
+        ivProfileImage = findViewById(R.id.imgUser);
+
+
         initializeLaunchers();
 
         Intent intent = getIntent();
@@ -69,30 +85,28 @@ public class edit_profile_doctor extends AppCompatActivity {
             finish();
         }
 
-        setupButtonClickListeners();
+        btnDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateDoctorProfile();
+            }
+        });
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkPermissionAndOpenGallery();
+            }
+        });
     }
 
-    private void initializeViews() {
-        etName = findViewById(R.id.etEditName);
-        etUsername = findViewById(R.id.etEditUsername);
-        etEmail = findViewById(R.id.etEditEmail);
-        etPhoneNumber = findViewById(R.id.etEditPhoneNumber);
-        etAddress = findViewById(R.id.etEditAddress);
-        etPostalCode = findViewById(R.id.etEditPostalCode);
-        etBio = findViewById(R.id.etEditBio);
-        etSpecialization = findViewById(R.id.etEditSpecialization);
-        etExperience = findViewById(R.id.etEditExperience);
-        etQualification = findViewById(R.id.etEditQualification);
-        btnBack = findViewById(R.id.btnBack);
-        btnDone = findViewById(R.id.btnDone);
-        ivProfileImage = findViewById(R.id.imgUser); // Correct ID for the doctor's ImageView
-    }
 
-    private void setupButtonClickListeners() {
-        btnDone.setOnClickListener(v -> updateDoctorProfile());
-        btnBack.setOnClickListener(v -> finish());
-        ivProfileImage.setOnClickListener(v -> checkPermissionAndOpenGallery());
-    }
+
 
     private void loadDoctorInfo() {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -112,7 +126,6 @@ public class edit_profile_doctor extends AppCompatActivity {
                         etExperience.setText(currentDoctor.getExperience());
                         etQualification.setText(currentDoctor.getQualification());
 
-                        // Load the profile image
                         String currentImageBase64 = currentDoctor.getProfileImageBase64();
                         if (currentImageBase64 != null && !currentImageBase64.isEmpty()) {
                             try {
@@ -120,7 +133,7 @@ public class edit_profile_doctor extends AppCompatActivity {
                                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                                 ivProfileImage.setImageBitmap(decodedByte);
                             } catch (Exception e) {
-                                ivProfileImage.setImageResource(R.drawable.doctor_1); // Default image on error
+                                ivProfileImage.setImageResource(R.drawable.doctor_1);
                             }
                         }
                     }
@@ -152,7 +165,7 @@ public class edit_profile_doctor extends AppCompatActivity {
         profileUpdates.put("experience", etExperience.getText().toString().trim());
         profileUpdates.put("qualification", etQualification.getText().toString().trim());
 
-        // If a new image was selected, add it to the updates
+
         if (imageBase64 != null && !imageBase64.isEmpty()) {
             profileUpdates.put("profileImageBase64", imageBase64);
         }
@@ -167,7 +180,6 @@ public class edit_profile_doctor extends AppCompatActivity {
         });
     }
 
-    // --- Image Handling Methods ---
 
     private void initializeLaunchers() {
         requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {

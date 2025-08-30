@@ -104,6 +104,7 @@ public class Doctor_Login extends AppCompatActivity {
                 }
             }
 
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(Doctor_Login.this, "Database Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();

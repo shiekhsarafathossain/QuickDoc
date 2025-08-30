@@ -44,7 +44,12 @@ public class AllAppointmentsActivity extends AppCompatActivity {
             finish();
         }
 
-        btnBack.setOnClickListener(v -> finish());
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void loadAllAppointments() {
