@@ -63,12 +63,13 @@
             android:id="@+id/etEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:inputType="textEmailAddress"
             android:background="@android:drawable/edit_text"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Password"
+            android:inputType="textPassword"
             android:textStyle="bold"
             android:layout_marginTop="10dp"
             android:textSize="15dp"/>
