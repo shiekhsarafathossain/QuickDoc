@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main"
+    android:background="#E2EAF4"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:id="@+id/rl1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <!-- User Info -->
+        <ImageView
+            android:id="@+id/userIcon"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/user"/>
+
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/userIcon"
+            android:layout_marginStart="16dp"
+            android:text="Loading..."
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvUserName"
+            android:layout_toEndOf="@+id/userIcon"
+            android:layout_marginStart="16dp"
+            android:text="Loading address..."/>
+
+        <Button
+            android:id="@+id/btnProfileInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvAddress"
+            android:layout_toEndOf="@id/userIcon"
+            android:layout_marginStart="16dp"
+            android:backgroundTint="#0060D8"
+            android:text="My Dashboard"/>
+
+        <!-- Upcoming Consultation -->
+        <TextView
+            android:id="@+id/tvUpcomingConsultant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upcoming Consultation"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_below="@id/userIcon"
+            android:layout_marginTop="24dp"
+            android:visibility="gone"/>
+
+        <RelativeLayout
+            android:id="@+id/rl2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvUpcomingConsultant"
+            android:layout_marginTop="8dp"
+            android:background="#ffffff"
+            android:padding="10dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tvDoctorName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/tvDoctorSpecializationConsult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvDoctorName"
+                android:layout_marginTop="4dp"/>
+
+            <TextView
+                android:id="@+id/tvDoctorAddressConsult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvDoctorSpecializationConsult"
+                android:layout_marginTop="4dp"/>
+
+            <TextView
+                android:id="@+id/tvDoctorConsultationTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvDoctorAddressConsult"
+                android:layout_marginTop="4dp"/>
+
+        </RelativeLayout>
+
+        <!-- Top Rated Doctors -->
+        <TextView
+            android:id="@+id/tvTopRatedDoctors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Top Rated Doctors"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_below="@+id/rl2"
+            android:layout_marginTop="24dp"/>
+
+        <LinearLayout
+            android:id="@+id/doctorsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTopRatedDoctors"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"/>
+        <Button
+            android:id="@+id/btnLogoutPatient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/doctorsContainer"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="#0060D8"
+            android:text="Log Out"/>
+
+    </RelativeLayout>
+
+</ScrollView>
+

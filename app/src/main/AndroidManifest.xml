@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- This is the required permission to access the user's gallery -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Permission for older Android versions (up to API 32) -->
+
+    <!-- Permission for newer Android versions (API 33+) -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.QuickDoc">
+
+        <!-- All of your existing activity declarations go here -->
+        <activity
+            android:name=".Sign_up"
+            android:exported="false" />
+        <activity
+            android:name=".signup_doctor"
+            android:exported="false" />
+        <activity
+            android:name=".Doctor_Login"
+            android:exported="false" />
+        <activity
+            android:name=".doctor_dashboard"
+            android:exported="false" />
+        <activity
+            android:name=".portal_doctor"
+            android:exported="false" />
+        <activity
+            android:name=".portal_patient"
+            android:exported="false" />
+        <activity
+            android:name=".welcome_page"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".portal"
+            android:exported="false" />
+        <activity
+            android:name=".Patient_Login"
+            android:exported="false" />
+        <activity
+            android:name=".patient_dashboard"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".edit_profile_patient"
+            android:exported="false" />
+        <activity
+            android:name=".edit_profile_doctor"
+            android:exported="false" />
+        <activity
+            android:name=".doctor_lookup"
+            android:exported="false" />
+        <activity
+            android:name=".book_appointment"
+            android:exported="false" />
+    </application>
+
+</manifest>
+

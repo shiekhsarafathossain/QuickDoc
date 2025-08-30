@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".doctor_lookup"
+    android:layout_margin="30dp">
+
+    <ImageView
+        android:id="@+id/imgUser"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/doctor_1"
+        android:layout_alignParentTop="true"/>
+
+    <TextView
+        android:id="@+id/tvDrName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dr. Mohammad Ali (Mahin)"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:paddingLeft="15dp"
+        android:layout_toRightOf="@id/imgUser"
+        android:layout_alignParentTop="true"/>
+
+    <TextView
+        android:id="@+id/tvShortBio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:text="Interventional Cardiologist"
+        android:layout_toRightOf="@id/imgUser"
+        android:layout_below="@id/tvDrName"/>
+
+    <Button
+        android:id="@+id/btnEditProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Book Now"
+        android:backgroundTint="#0060D8"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@id/imgUser"
+        android:layout_below="@id/tvShortBio"
+        android:layout_alignBottom="@id/imgUser"/>
+
+    <TextView
+        android:id="@+id/tvSpecialization"
+        android:layout_marginTop="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Specialization"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_below="@id/imgUser" />
+
+    <TextView
+        android:id="@+id/tvSpecializationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" Dr. Mohammad Ali (Mahin) specializes in the diagnosis and treatment of heart diseases, interventional cardiac procedures, and managing complex cardiac conditions."
+
+        android:layout_below="@id/tvSpecialization" />
+
+    <TextView
+        android:id="@+id/tvExperience"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Experience"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_below="@id/tvSpecializationText" />
+
+    <TextView
+        android:id="@+id/tvExperienceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Assistant Professor and Head of Department (Cardiology) Ibn Sina Medical College Hospital, Kallyanpur"
+
+        android:layout_below="@id/tvExperience" />
+
+    <TextView
+        android:id="@+id/tvQualifications"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Qualifications"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_below="@id/tvExperienceText" />
+
+    <TextView
+        android:id="@+id/tvQualificationsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MBBS, MD (Cardiology), FESC, FAPSIC, FSCAI"
+
+        android:layout_below="@id/tvQualifications" />
+
+<!--    <Button-->
+<!--        android:id="@+id/btnEmergencySchedules"-->
+<!--        android:layout_marginTop="100dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Emergency Schedules"-->
+
+<!--        android:backgroundTint="#0060D8"-->
+<!--        android:layout_below="@id/tvQualificationsText"/>-->
+
+<!--    <Button-->
+<!--        android:id="@+id/btnSeeAppointment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="See Appointment"-->
+<!--        android:layout_marginTop="100dp"-->
+<!--        android:backgroundTint="#0060D8"-->
+<!--        android:layout_below="@+id/tvQualificationsText"/>-->
+
+
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:textColor="#0060D8"
+        app:strokeWidth="1dp"
+        app:strokeColor="#0060D8"
+        android:backgroundTint="@android:color/transparent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvQualificationsText"
+        android:layout_marginTop="200dp"/>
+
+<!--    <Button-->
+<!--        android:id="@+id/btnDone"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Log out"-->
+
+<!--        android:backgroundTint="#0060D8"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:layout_alignTop="@id/btnBack"/>-->
+
+</RelativeLayout>

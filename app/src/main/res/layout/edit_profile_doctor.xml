@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".edit_profile_doctor"
+    android:background="@drawable/backrground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="40dp">
+
+            <ImageView
+                android:id="@+id/imgUser"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp"
+                android:src="@drawable/user_icon" />
+
+            <EditText
+                android:id="@+id/etEditName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/edit_text"
+                android:layout_marginBottom="10dp"
+                android:hint="Edit Name" />
+
+            <EditText
+                android:id="@+id/etEditUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/edit_text"
+                android:layout_marginBottom="10dp"
+                android:hint="Edit Username" />
+
+            <EditText
+                android:id="@+id/etEditEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/edit_text"
+                android:layout_marginBottom="10dp"
+                android:hint="Edit Email" />
+
+            <EditText
+                android:id="@+id/etEditPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/edit_text"
+                android:layout_marginBottom="10dp"
+                android:hint="Change Phone Number" />
+
+            <EditText
+                android:id="@+id/etEditAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/edit_text"
+                android:layout_marginBottom="10dp"
+                android:hint="Change Address" />
+
+            <EditText
+                android:id="@+id/etEditPostalCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/edit_text"
+                android:layout_marginBottom="10dp"
+                android:hint="Change Postal Code" />
+
+            <EditText
+                android:id="@+id/etEditBio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/edit_text"
+                android:layout_marginBottom="10dp"
+                android:hint="Edit Bio" />
+
+            <EditText
+                android:id="@+id/etEditSpecialization"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/edit_text"
+                android:layout_marginBottom="10dp"
+                android:hint="Edit Specialization" />
+
+            <EditText
+                android:id="@+id/etEditExperience"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/edit_text"
+                android:layout_marginBottom="10dp"
+                android:hint="Edit Experience" />
+
+            <EditText
+                android:id="@+id/etEditQualification"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/edit_text"
+                android:hint="Edit Qualification" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:paddingBottom="40dp">
+
+            <Button
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:backgroundTint="@android:color/transparent"
+                android:padding="8dp"
+                android:text="Back"
+                android:textColor="@android:color/white"
+                app:strokeColor="@android:color/white"
+                app:strokeWidth="2dp" />
+
+            <Button
+                android:id="@+id/btnDone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:backgroundTint="@android:color/white"
+                android:padding="8dp"
+                android:text="Done"
+                android:textColor="#4284D5" />
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>
+

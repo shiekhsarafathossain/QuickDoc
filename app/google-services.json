@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "698792851455",
+    "firebase_url": "https://ewucsesummer25quickdoc-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "ewucsesummer25quickdoc",
+    "storage_bucket": "ewucsesummer25quickdoc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:698792851455:android:720daed4e26e38da6619ca",
+        "android_client_info": {
+          "package_name": "com.ewucsesummer25.quickdoc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACtZg-Q_LAT9_XJV7312B0oAkCJgfqtm4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_portal_Patient"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/reg"
+    android:gravity="center_vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+        <Button
+            android:id="@+id/btnLoginPatient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Login as Patient"
+            android:layout_weight="1"
+            android:textSize="20dp"
+            android:backgroundTint="#0060D8"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="---------- Are you a new user? ----------"
+            android:textColor="#ffffff"
+            android:textSize="20dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp" />
+
+        <Button
+            android:id="@+id/btnSignup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign Up"
+            android:textColor="@color/white"
+            app:strokeWidth="2dp"
+            android:textStyle="bold"
+            app:strokeColor="#ffffff"
+            android:backgroundTint="@android:color/transparent"/>
+    </LinearLayout>
+
+</LinearLayout>

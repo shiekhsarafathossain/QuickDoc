@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".patient_dashboard"
+    android:padding="20dp">
+
+    <ImageView
+        android:id="@+id/imgUser"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/user"
+        android:layout_alignParentTop="true"/>
+
+    <TextView
+        android:id="@+id/tvPatientName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Loading..."
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_toEndOf="@id/imgUser"
+        android:layout_marginStart="16dp"/>
+
+    <TextView
+        android:id="@+id/tvPatientAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Loading address..."
+        android:layout_below="@id/tvPatientName"
+        android:layout_toEndOf="@id/imgUser"
+        android:layout_marginStart="16dp"/>
+
+    <Button
+        android:id="@+id/btnEditProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Profile"
+        android:backgroundTint="#0060D8"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@id/imgUser"
+        android:layout_below="@id/tvPatientAddress"
+        android:layout_marginStart="16dp"/>
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imgBell"-->
+<!--        android:layout_width="40dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:src="@drawable/notification"-->
+<!--        android:layout_alignParentEnd="true" />-->
+
+    <TextView
+        android:id="@+id/tvMyAppointments"
+        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Appointments"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_below="@id/imgUser" />
+
+    <ScrollView
+        android:id="@+id/svAppointments"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/tvMyAppointments"
+        android:layout_above="@+id/btnBookAppointment"
+        android:layout_marginTop="10dp">
+        <LinearLayout
+            android:id="@+id/appointmentsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnBookAppointment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Book New Appointment"
+        android:backgroundTint="#0060D8"
+        android:layout_above="@id/btnEmergencyCalls"/>
+
+    <Button
+        android:id="@+id/btnEmergencyCalls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Emergency Call"
+        android:backgroundTint="#0060D8"
+        android:layout_above="@id/bottom_nav_buttons"/>
+
+    <RelativeLayout
+        android:id="@+id/bottom_nav_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:backgroundTint="#0060D8"
+            android:layout_alignParentStart="true"/>
+
+        <Button
+            android:id="@+id/btnDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Log out"
+            android:backgroundTint="#0060D8"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+
+</RelativeLayout>
+

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".edit_profile_doctor"
+    android:orientation="vertical"
+    android:background="@drawable/backrground"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="40dp">
+        <ImageView
+            android:id="@+id/imgUser"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:src="@drawable/user_icon"
+            android:layout_margin="40dp"/>
+
+        <EditText
+            android:id="@+id/etEditName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/edit_text"
+            android:layout_weight="1"
+            android:hint="Edit Name" />
+
+        <EditText
+            android:id="@+id/etEditUserame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/edit_text"
+
+            android:hint="Edit Username" />
+
+        <EditText
+            android:id="@+id/etEditEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/edit_text"
+
+            android:hint="Edit Email" />
+
+        <EditText
+            android:id="@+id/etChangePhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/edit_text"
+            android:hint="Change Phone Number" />
+
+        <EditText
+            android:id="@+id/etChangeAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/edit_text"
+            android:hint="Change Address" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="40dp">
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:textColor="@android:color/white"
+            app:strokeWidth="2dp"
+            app:strokeColor="@android:color/white"
+            android:backgroundTint="@android:color/transparent"
+            android:layout_alignParentLeft="true"/>
+
+        <Button
+            android:id="@+id/btnDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Done"
+            android:textColor="#4284D5"
+            android:backgroundTint="@android:color/white"
+
+            android:layout_alignParentRight="true"/>
+
+
+    </RelativeLayout>
+
+</LinearLayout>
