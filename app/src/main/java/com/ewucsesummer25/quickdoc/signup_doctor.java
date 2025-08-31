@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,11 +41,8 @@ public class signup_doctor extends AppCompatActivity {
 
     private DatabaseReference databaseReference;
 
-
-
     private ActivityResultLauncher<String> requestPermissionLauncher;
     private ActivityResultLauncher<Intent> pickImageLauncher;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +66,6 @@ public class signup_doctor extends AppCompatActivity {
         btnBack = findViewById(R.id.btnBack);
         ivProfileImage = findViewById(R.id.addImage);
 
-
         initializeLaunchers();
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +83,6 @@ public class signup_doctor extends AppCompatActivity {
             }
         });
 
-        // Make the profile image clickable to open the gallery
         ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +91,56 @@ public class signup_doctor extends AppCompatActivity {
         });
     }
 
+    private void initializeLaunchers() {
+        requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if (isGranted) {
+                openGallery();
+            } else {
+                Toast.makeText(this, "Permission denied to access gallery.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        pickImageLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new androidx.activity.result.ActivityResultCallback<androidx.activity.result.ActivityResult>() {
+                    @Override
+                    public void onActivityResult(androidx.activity.result.ActivityResult result) {
+                        if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                            Uri imageUri = result.getData().getData();
+                            processImageInBackground(imageUri);
+                        }
+                    }
+                }
+        );
+    }
+
+    private void processImageInBackground(final Uri imageUri) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                    final Bitmap resizedBitmap = resizeBitmap(bitmap, 512);
+                    imageBase64 = bitmapToBase64(resizedBitmap);
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ivProfileImage.setImageBitmap(resizedBitmap);
+                        }
+                    });
+
+                } catch (IOException e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(signup_doctor.this, "Failed to load image.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
 
     private void registerDoctor() {
         String name = etName.getText().toString().trim();
@@ -156,30 +200,6 @@ public class signup_doctor extends AppCompatActivity {
                 }
             });
         }
-    }
-
-    private void initializeLaunchers() {
-        requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-            if (isGranted) {
-                openGallery();
-            } else {
-                Toast.makeText(this, "Permission denied to access gallery.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        pickImageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                Uri imageUri = result.getData().getData();
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                    Bitmap resizedBitmap = resizeBitmap(bitmap, 512);
-                    imageBase64 = bitmapToBase64(resizedBitmap);
-                    ivProfileImage.setImageBitmap(resizedBitmap);
-                } catch (IOException e) {
-                    Toast.makeText(this, "Failed to load image.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 
     private void checkPermissionAndOpenGallery() {

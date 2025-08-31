@@ -77,12 +77,7 @@ public class Sign_up extends AppCompatActivity {
         });
 
         initializeLaunchers();
-
     }
-
-
-
-
 
     private void initializeLaunchers() {
         requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
@@ -93,34 +88,63 @@ public class Sign_up extends AppCompatActivity {
             }
         });
 
-        pickImageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                Uri imageUri = result.getData().getData();
+        pickImageLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new androidx.activity.result.ActivityResultCallback<androidx.activity.result.ActivityResult>() {
+                    @Override
+                    public void onActivityResult(androidx.activity.result.ActivityResult result) {
+                        if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                            Uri imageUri = result.getData().getData();
+                            processImageInBackground(imageUri);
+                        }
+                    }
+                }
+        );
+    }
+
+    private void processImageInBackground(final Uri imageUri) {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
                 try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                    Bitmap resizedBitmap = resizeBitmap(bitmap, 512);
+
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                    final Bitmap resizedBitmap = resizeBitmap(bitmap, 512);
                     imageBase64 = bitmapToBase64(resizedBitmap);
-                    ivProfileImage.setImageBitmap(resizedBitmap);
+
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ivProfileImage.setImageBitmap(resizedBitmap);
+                        }
+                    });
+
                 } catch (IOException e) {
-                    Toast.makeText(this, "Failed to load image.", Toast.LENGTH_SHORT).show();
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(Sign_up.this, "Failed to load image.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
-        });
+        }).start();
     }
 
     private void checkPermissionAndOpenGallery() {
         String permission;
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            permission = Manifest.permission.READ_MEDIA_IMAGES; // For Android 13+
+            permission = Manifest.permission.READ_MEDIA_IMAGES;
         } else {
-            permission = Manifest.permission.READ_EXTERNAL_STORAGE; // For older versions
+            permission = Manifest.permission.READ_EXTERNAL_STORAGE;
         }
 
         if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
             openGallery();
         } else {
-            // Request the appropriate permission at runtime
             requestPermissionLauncher.launch(permission);
         }
     }
@@ -208,4 +232,3 @@ public class Sign_up extends AppCompatActivity {
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 }
-
