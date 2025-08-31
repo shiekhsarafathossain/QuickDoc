@@ -8,6 +8,7 @@
     android:layout_height="match_parent"
     tools:context=".welcome_page"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     android:layout_margin="25dp">
 
     <LinearLayout

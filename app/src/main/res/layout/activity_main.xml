@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:id="@+id/main"
     android:background="#E2EAF4"
+    android:layout_margin="20dp"
     android:fillViewport="true">
 
     <RelativeLayout

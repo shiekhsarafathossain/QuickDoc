@@ -9,6 +9,7 @@
     tools:context=".MainActivity"
     android:orientation="vertical"
     android:background="@drawable/reg"
+    android:fitsSystemWindows="true"
     android:gravity="center_vertical">
 
     <LinearLayout

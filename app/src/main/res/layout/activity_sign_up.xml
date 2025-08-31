@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E2EAF4"
-    tools:context=".Sign_up">
+    tools:context=".Sign_up"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"

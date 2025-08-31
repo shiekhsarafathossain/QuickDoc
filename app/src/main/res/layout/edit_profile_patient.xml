@@ -8,6 +8,7 @@
     android:layout_height="match_parent"
     tools:context=".edit_profile_doctor"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     android:background="@drawable/backrground"
     >
     <LinearLayout

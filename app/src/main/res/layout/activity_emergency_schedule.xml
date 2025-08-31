@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
+    android:fitsSystemWindows="true"
     android:background="#E2EAF4">
 
     <TextView
