@@ -149,7 +149,7 @@ public class book_appointment extends AppCompatActivity {
             calendar.setTime(appointmentDate);
 
             // 2. Subtract 4 hours for the notification time
-            calendar.add(Calendar.MINUTE, -5);
+            calendar.add(Calendar.HOUR, -1);
 
             long notificationTime = calendar.getTimeInMillis();
 
