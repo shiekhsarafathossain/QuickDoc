@@ -15,6 +15,15 @@
         android:orientation="vertical"
         android:padding="20dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Patient Account"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="#0060D8"/>
+
         <ImageView
             android:id="@+id/addImage"
             android:layout_width="90dp"
@@ -24,15 +33,7 @@
             android:layout_marginBottom="20dp"
             android:src="@drawable/add_image" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Create Patient Account"
-            android:layout_gravity="center"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:textColor="#0060D8"
-            android:layout_marginBottom="25dp"/>
+
 
         <TextView
             android:layout_width="match_parent"
