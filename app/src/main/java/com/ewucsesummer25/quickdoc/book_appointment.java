@@ -1,6 +1,9 @@
 package com.ewucsesummer25.quickdoc;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -25,10 +28,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -69,7 +74,7 @@ public class book_appointment extends AppCompatActivity {
         doctorList = new ArrayList<>();
         doctorNames = new ArrayList<>();
         bookedTimeSlots = new ArrayList<>();
-        allTimeSlots = new ArrayList<>(Arrays.asList("09:00 AM - 09:30 AM", "10:00 AM - 10:30 AM", "11:00 AM - 11:30 AM", "02:00 PM - 02:30 PM", "03:00 PM - 03:30 PM"));
+        allTimeSlots = new ArrayList<>(Arrays.asList("09:00 PM - 09:30 PM", "10:00 PM - 10:30 PM", "11:00 PM - 11:30 PM", "02:00 PM - 02:30 PM", "03:00 PM - 03:30 PM"));
 
         setupDoctorSpinner();
         setupTimeSlotListView();
@@ -91,6 +96,90 @@ public class book_appointment extends AppCompatActivity {
         });
     }
 
+    private void bookAppointment() {
+        if (patientId == null || patientName == null) {
+            Toast.makeText(this, "Patient details not found. Please log in again.", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (selectedDoctorId == null || selectedDoctorName == null) {
+            Toast.makeText(this, "Please select a doctor.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (selectedDate == null) {
+            Toast.makeText(this, "Please select a date.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (selectedTimeSlot == null) {
+            Toast.makeText(this, "Please select an available time slot.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (bookedTimeSlots.contains(selectedTimeSlot)) {
+            Toast.makeText(this, "This time slot is already booked. Please select another.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        String appointmentId = appointmentsRef.push().getKey();
+        Appointment appointment = new Appointment(appointmentId, patientId, selectedDoctorId, selectedDoctorName, patientName, selectedDate, selectedTimeSlot, "Scheduled");
+
+        if (appointmentId != null) {
+            appointmentsRef.child(appointmentId).setValue(appointment).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(book_appointment.this, "Appointment booked successfully!", Toast.LENGTH_LONG).show();
+
+                    // --- NEW CODE: Schedule the notification ---
+                    scheduleNotification(appointment);
+
+                    fetchBookedSlotsForDoctorAndDate();
+                } else {
+                    Toast.makeText(book_appointment.this, "Failed to book appointment. Please try again.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    // --- NEW METHOD: To schedule the notification ---
+    private void scheduleNotification(Appointment appointment) {
+        try {
+            // 1. Combine date and time to get a full timestamp
+            String dateTimeString = appointment.getAppointmentDate() + " " + appointment.getAppointmentTime().split(" ")[0]; // e.g., "2024-12-25 09:00"
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
+            Date appointmentDate = sdf.parse(appointment.getAppointmentDate() + " " + appointment.getAppointmentTime());
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(appointmentDate);
+
+            // 2. Subtract 4 hours for the notification time
+            calendar.add(Calendar.MINUTE, -5);
+
+            long notificationTime = calendar.getTimeInMillis();
+
+            // 3. Create an intent to trigger the BroadcastReceiver
+            Intent intent = new Intent(this, AppointmentNotificationReceiver.class);
+            intent.putExtra("DOCTOR_NAME", appointment.getDoctorName());
+            intent.putExtra("APPOINTMENT_TIME", appointment.getAppointmentTime());
+            // Use a unique ID for the notification (e.g., from the appointmentId hash)
+            int notificationId = appointment.getAppointmentId().hashCode();
+            intent.putExtra("NOTIFICATION_ID", notificationId);
+
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                    this,
+                    notificationId, // Use the unique ID as the request code
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+            // 4. Set the alarm
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            if (System.currentTimeMillis() < notificationTime) {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, notificationTime, pendingIntent);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Could not schedule reminder.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // ... (the rest of your methods: setupDoctorSpinner, setupTimeSlotListView, etc., remain unchanged)
     private void setupDoctorSpinner() {
         doctorAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, doctorNames);
         doctorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -200,43 +289,6 @@ public class book_appointment extends AppCompatActivity {
         });
     }
 
-    private void bookAppointment() {
-        if (patientId == null || patientName == null) {
-            Toast.makeText(this, "Patient details not found. Please log in again.", Toast.LENGTH_LONG).show();
-            return;
-        }
-        if (selectedDoctorId == null || selectedDoctorName == null) {
-            Toast.makeText(this, "Please select a doctor.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (selectedDate == null) {
-            Toast.makeText(this, "Please select a date.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (selectedTimeSlot == null) {
-            Toast.makeText(this, "Please select an available time slot.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (bookedTimeSlots.contains(selectedTimeSlot)) {
-            Toast.makeText(this, "This time slot is already booked. Please select another.", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        String appointmentId = appointmentsRef.push().getKey();
-        Appointment appointment = new Appointment(appointmentId, patientId, selectedDoctorId, selectedDoctorName, patientName, selectedDate, selectedTimeSlot, "Scheduled");
-
-        if (appointmentId != null) {
-            appointmentsRef.child(appointmentId).setValue(appointment).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    Toast.makeText(book_appointment.this, "Appointment booked successfully!", Toast.LENGTH_LONG).show();
-                    fetchBookedSlotsForDoctorAndDate();
-                } else {
-                    Toast.makeText(book_appointment.this, "Failed to book appointment. Please try again.", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    }
-
     private class TimeSlotAdapter extends ArrayAdapter<String> {
 
         private final List<String> slots;
@@ -274,4 +326,3 @@ public class book_appointment extends AppCompatActivity {
         }
     }
 }
-

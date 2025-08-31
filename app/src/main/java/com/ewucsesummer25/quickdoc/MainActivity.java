@@ -1,7 +1,12 @@
 package com.ewucsesummer25.quickdoc;
 
+import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,9 +24,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,16 +42,14 @@ public class MainActivity extends AppCompatActivity {
     private ImageView ivPatientProfile;
     private TextView tvUserName, tvAddress;
     private Button btnProfileInfo, btnLogoutPatient;
-
     private RelativeLayout upcomingConsultationLayout;
     private TextView tvDoctorName, tvDoctorConsultationTime, tvUpcomingConsultantTitle, tvDoctorAddressConsult, tvDoctorSpecializationConsult;
-
-
     private LinearLayout doctorsContainer;
-
     private DatabaseReference patientRef, appointmentsRef, doctorsRef;
     private String patientId;
     private String patientName;
+
+    private BroadcastReceiver appointmentReminderReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         btnProfileInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(patientId != null) {
+                if (patientId != null) {
                     Intent intent = new Intent(MainActivity.this, patient_dashboard.class);
                     intent.putExtra("PATIENT_ID", patientId);
                     startActivity(intent);
@@ -90,10 +91,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         patientId = getIntent().getStringExtra("PATIENT_ID");
-
-
 
         if (patientId != null && !patientId.isEmpty()) {
             patientRef = FirebaseDatabase.getInstance().getReference("patients").child(patientId);
@@ -108,9 +106,54 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
-
+        setupAppointmentReceiver();
     }
 
+    private void setupAppointmentReceiver() {
+        appointmentReminderReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String doctorName = intent.getStringExtra("DOCTOR_NAME");
+                String appointmentTime = intent.getStringExtra("APPOINTMENT_TIME");
+                int notificationId = intent.getIntExtra("NOTIFICATION_ID", 0);
+
+                showAppointmentDialog(doctorName, appointmentTime);
+
+                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.cancel(notificationId);
+            }
+        };
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                appointmentReminderReceiver,
+                new IntentFilter(AppointmentNotificationReceiver.ACTION_SHOW_APPOINTMENT_REMINDER)
+        );
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(appointmentReminderReceiver);
+    }
+
+    private void showAppointmentDialog(String doctorName, String appointmentTime) {
+        new AlertDialog.Builder(this)
+                .setTitle("Appointment Reminder")
+                .setMessage("You have an appointment with " + doctorName + " at " + appointmentTime + ".")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .show();
+    }
 
     private void loadPatientData() {
         patientRef.addValueEventListener(new ValueEventListener() {
@@ -131,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(MainActivity.this, "Failed to load patient data.", Toast.LENGTH_SHORT).show();
@@ -162,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
                     tvUpcomingConsultantTitle.setVisibility(View.GONE);
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(MainActivity.this, "Failed to load appointments.", Toast.LENGTH_SHORT).show();
@@ -174,9 +219,9 @@ public class MainActivity extends AppCompatActivity {
         doctorForAppointmentRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
+                if (snapshot.exists()) {
                     Doctor doctor = snapshot.getValue(Doctor.class);
-                    if(doctor != null){
+                    if (doctor != null) {
                         tvDoctorName.setText(appointment.getDoctorName());
                         tvDoctorSpecializationConsult.setText(doctor.getSpecialization());
                         tvDoctorAddressConsult.setText(doctor.getAddress());
@@ -202,14 +247,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 doctorsContainer.removeAllViews();
-                for(DataSnapshot doctorSnapshot : snapshot.getChildren()){
+                for (DataSnapshot doctorSnapshot : snapshot.getChildren()) {
                     Doctor doctor = doctorSnapshot.getValue(Doctor.class);
-                    if(doctor != null){
+                    if (doctor != null) {
                         doctor.setDoctorId(doctorSnapshot.getKey());
                         addDoctorViewToContainer(doctor);
                     }
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(MainActivity.this, "Failed to load doctors list.", Toast.LENGTH_SHORT).show();
@@ -231,7 +277,6 @@ public class MainActivity extends AppCompatActivity {
         tvDocSpec.setText(doctor.getSpecialization());
         tvDocAddress.setText(doctor.getAddress());
 
-
         String imageBase64 = doctor.getProfileImageBase64();
         if (imageBase64 != null && !imageBase64.isEmpty()) {
             try {
@@ -240,7 +285,6 @@ public class MainActivity extends AppCompatActivity {
                 ivDocProfile.setImageBitmap(decodedByte);
             } catch (Exception e) {
                 ivDocProfile.setImageResource(R.drawable.doctor_1);
-
             }
         }
 
@@ -270,4 +314,3 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show();
     }
 }
-
